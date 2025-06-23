@@ -4,7 +4,7 @@ import clientPromise from "@/lib/mongodb";
 export async function GET() {
   try {
     const client = await clientPromise;
-    const db = client.db("your_db_name"); // change this
+    const db = client.db("your_db_name");
     const posts = await db
       .collection("posts")
       .find({ status: "published" })

@@ -26,7 +26,7 @@ export function BlogCard({
       />
       <div className="p-4 border-t ">
         <h3 className="text-xl font-semibold text-gray-800 mb-2">{title}</h3>
-        <div className="text-sm text-gray-500 text-nowrap">
+        <div className="text-sm text-gray-500 text-nowrap flex-col  gap-2 flex md:flex-row items-center">
           By {author} • {new Date(date).toLocaleDateString()} • {readingTime}
           <button>
             <Link

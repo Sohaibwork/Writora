@@ -1,57 +1,18 @@
-// /* eslint-disable @typescript-eslint/no-unused-vars */
-// "use client";
-
-// import Link from "next/link";
-// import { useState } from "react";
-
-// export function Navbar() {
-//   const [isLoggedIn, setIsLoggedIn] = useState(false);
-//   return (
-//     <nav className="text-gray-600 body-font w-full  shadow-sm bg-blue-100 sticky top-0 z-50">
-//       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-//         <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-//           <span className="ml-3 text-3xl logo-font font-bold  tracking-wide bg-gradient-to-r from-[#0b3c58] to-[#2f90ab] bg-clip-text text-transparent">
-//             Writora
-//           </span>
-//         </a>
-//         <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
-//           <Link
-//             className="mr-5  text-cyan-700 font-semibold text-lg cursor-pointer"
-//             href={"/"}
-//           >
-//             Home
-//           </Link>
-//           <Link
-//             className="mr-5 text-cyan-700 font-semibold text-lg cursor-pointer"
-//             href={""}
-//           >
-//             Dashboard
-//           </Link>
-//           <Link
-//             className="mr-5  text-cyan-700 font-semibold text-lg cursor-pointer"
-//             href={""}
-//           >
-//             Editor
-//           </Link>
-//         </nav>
-//         <button className="inline-flex items-center bg-[#657de9]  text-white border-0 py-1 px-4 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
-//           Login
-//         </button>
-//       </div>
-//     </nav>
-//   );
-// }
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Menu, X } from "lucide-react"; // Optional: replace with your icon library
+import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 export function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { data: session, status } = useSession();
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const isLoggedIn = !!session; // true if session exists
 
   return (
     <nav className="bg-blue-100 text-gray-600 w-full shadow-sm sticky top-0 z-50">
@@ -86,18 +47,18 @@ export function Navbar() {
 
           {isLoggedIn ? (
             <Link
-              href="/profile"
-              className="bg-[#657de9] text-white py-1 px-4 rounded hover:bg-[#4c64c7] transition"
+              href="/logout"
+              className="bg-red-400 text-white py-1 px-4 rounded hover:bg-red-600 transition"
             >
-              Profile
+              Logout
             </Link>
           ) : (
-            <button
-              onClick={() => setIsLoggedIn(true)} // just for demo
-              className="bg-[#2ba8fb] text-white py-1 px-4 rounded hover:bg-[#657de9da] cursor-pointer transition"
+            <Link
+              href="/login"
+              className="bg-[#2ba8fb] text-white py-1 px-4 rounded hover:bg-[#657de9da] transition"
             >
               Login
-            </button>
+            </Link>
           )}
         </div>
 
@@ -135,22 +96,20 @@ export function Navbar() {
           </Link>
           {isLoggedIn ? (
             <Link
-              href="/profile"
-              className="block py-2 text-white bg-[#657de9] text-center rounded"
+              href="/logout"
+              className="block py-2 text-white bg-red-500 text-center rounded"
               onClick={toggleMenu}
             >
-              Profile
+              Logout
             </Link>
           ) : (
-            <button
-              onClick={() => {
-                setIsLoggedIn(true);
-                toggleMenu();
-              }}
-              className="block w-full py-2 text-white bg-[#2ba8fb] rounded text-center cursor-pointer   "
+            <Link
+              href="/login"
+              onClick={toggleMenu}
+              className="block w-full py-2 text-white bg-[#2ba8fb] rounded text-center"
             >
               Login
-            </button>
+            </Link>
           )}
         </div>
       )}
