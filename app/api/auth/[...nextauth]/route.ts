@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectDB } from "@/lib/dbConnect";
@@ -9,39 +10,42 @@ const handler = NextAuth({
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: {},
-        password: {},
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials: any): Promise<any> {
         await connectDB();
-        if (!credentials || !credentials.email || !credentials.password) {
-          throw new Error("Email and password are required");
+        try {
+          const user = await User.findOne({ email: credentials.email });
+          if (!user) {
+            throw new Error("Invalid email or password");
+          }
+          if (!user.isVerified) {
+            throw new Error(
+              "Email not verified, please verify your email first."
+            );
+          }
+          if (!user.password || typeof user.password !== "string") {
+            throw new Error("Invalid email or password");
+          }
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
+          if (isPasswordValid) {
+            return user;
+          } else {
+            throw new Error("Invalid email or password");
+          }
+        } catch (error: any) {
+          console.error("Database connection error:", error);
+          throw new Error(error.message || " connection error");
         }
-        const userDoc = await User.findOne({ email: credentials.email });
-
-        if (!userDoc || !userDoc.password)
-          throw new Error("Invalid email or password");
-
-        const isValid = await bcrypt.compare(
-          credentials.password,
-          userDoc.password
-        );
-        if (!isValid) throw new Error("Invalid email or password");
-
-        // Convert Mongoose document to plain object and remove sensitive fields
-        const user = userDoc.toObject();
-        delete user.password;
-        return {
-          id: user._id.toString(),
-          email: user.email,
-          name: user.name ?? null,
-          image: user.image ?? null,
-        };
       },
     }),
   ],
   pages: {
-    signIn: "/login",
+    signIn: "/sign-in",
   },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
