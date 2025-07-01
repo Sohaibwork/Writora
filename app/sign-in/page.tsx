@@ -1,39 +1,33 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
+import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
-import "@/app/styles/signup.css";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import Link from "next/link";
+import { EyeOff, Eye } from "lucide-react";
 
-function RegisterPage() {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
-  const router = useRouter();
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async function handleRegister(e: any) {
+  async function handleLogin(e: any) {
     e.preventDefault();
-    const res = await fetch("/api/register", {
-      method: "POST",
-      body: JSON.stringify(form),
-      headers: { "Content-Type": "application/json" },
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
     });
-
-    if (!res.ok) {
-      const data = await res.json();
-      if (data.error) {
-        toast.error(data.error);
-      } else {
-        toast.error("Registration failed. Please try again.");
-      }
-      setError(data.error);
+    if (res?.error) setError(res.error);
+    if (res?.error) {
+      toast.error(res.error);
     } else {
-      toast.success("Registration successful!-Please login to continue");
-
-      router.push("/sign-in");
+      toast.success("Login successful!");
+      router.push("/");
     }
   }
 
@@ -82,7 +76,7 @@ function RegisterPage() {
           <div className="flex-1 flex flex-col justify-center">
             <div className="mb-6">
               <h1 className="text-4xl font-bold mb-4">Welcome to Writora</h1>
-              <p className="text-xl text-white/90">Join Us Now !</p>
+              <p className="text-xl text-white/90">Login Now !</p>
             </div>
 
             {/* Phone mockup */}
@@ -147,29 +141,11 @@ function RegisterPage() {
         <div className="w-full max-w-md space-y-6">
           <div className="text-center md:text-left">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Create New Account
+              Login to your Account
             </h2>
           </div>
 
-          <form onSubmit={handleRegister} className="space-y-6">
-            {/* Full Name */}
-            <div>
-              <label
-                htmlFor="fullName"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Full Name
-              </label>
-              <input
-                id="fullName"
-                type="text"
-                placeholder="Name"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200"
-              />
-            </div>
-
+          <form onSubmit={handleLogin} className="space-y-6">
             {/* Email */}
             <div>
               <label
@@ -182,8 +158,9 @@ function RegisterPage() {
                 id="email"
                 type="email"
                 placeholder="Email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                value={email}
+                required
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200"
               />
             </div>
@@ -201,13 +178,14 @@ function RegisterPage() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
-                  value={form.password}
-                  onChange={(e) =>
-                    setForm({ ...form, password: e.target.value })
-                  }
+                  required
+                  value={password}
+                  minLength={8}
+                  maxLength={16}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200"
                 />
-                {error && <p className="text-red-500">{error}</p>}
+                {error && <p className="text-red-500 mt-1">{error}</p>}
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -218,18 +196,18 @@ function RegisterPage() {
               </div>
             </div>
 
-            {/* Sign Up Button */}
+            {/* Login Button */}
             <button
               type="submit"
               className="w-full bg-purple-600 cursor-pointer hover:bg-purple-700 text-white py-3 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
             >
-              Sign Up
+              Login
             </button>
 
             <div className="text-center text-gray-600">
-              have an account?
+              Dont&apos;t hava an account?
               <button className="text-blue-500 hover:underline ml-1">
-                <Link href={"/sign-in"}>Login</Link>
+                <Link href={"/register"}>Signup</Link>
               </button>
             </div>
           </form>
@@ -238,5 +216,3 @@ function RegisterPage() {
     </div>
   );
 }
-
-export default RegisterPage;

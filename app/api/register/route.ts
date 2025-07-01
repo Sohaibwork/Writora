@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { connectDB } from "@/lib/dbConnect";
 import { User } from "@/models/user.model";
 import bcrypt from "bcryptjs";
@@ -19,5 +18,11 @@ export async function POST(req: Request) {
   const hashed = await bcrypt.hash(password, 10);
   const user = await User.create({ name, email, password: hashed });
 
-  return NextResponse.json({ message: "Registered successfully" });
+  return NextResponse.json(
+    {
+      message: "Registered successfully",
+      user: { id: user._id, email: user.email },
+    },
+    { status: 201 }
+  );
 }

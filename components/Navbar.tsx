@@ -54,8 +54,8 @@ export function Navbar() {
             </Link>
           ) : (
             <Link
-              href="/login"
-              className="bg-[#2ba8fb] text-white py-1 px-4 rounded hover:bg-[#657de9da] transition"
+              href="/sign-in"
+              className="bg-[#2ba8fb] text-white py-1 px-4 rounded hover:bg-[#2ba8fbd4] transition"
             >
               Login
             </Link>
@@ -104,7 +104,7 @@ export function Navbar() {
             </Link>
           ) : (
             <Link
-              href="/login"
+              href="/sign-in"
               onClick={toggleMenu}
               className="block w-full py-2 text-white bg-[#2ba8fb] rounded text-center"
             >

@@ -24,7 +24,7 @@ export function Hero() {
               Explore
             </Link>
             <Link
-              href="/login"
+              href="/sign-in"
               className="border border-[#657de9] text-[#657de9] px-6 py-3 rounded-md text-lg font-medium hover:bg-[#e7ebff] transition"
             >
               Login
