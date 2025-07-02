@@ -14,9 +14,11 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function handleLogin(e: any) {
     e.preventDefault();
+    setLoading(true);
     const res = await signIn("credentials", {
       email,
       password,
@@ -26,6 +28,7 @@ export default function LoginPage() {
     if (res?.error) {
       toast.error(res.error);
     } else {
+      setLoading(false);
       toast.success("Login successful!");
       router.push("/");
     }
@@ -199,7 +202,33 @@ export default function LoginPage() {
               type="submit"
               className="w-full bg-purple-600 cursor-pointer hover:bg-purple-700 text-white py-3 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
             >
-              Login
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <svg
+                    className="animate-spin h-5 w-5 mr-2 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8z"
+                    ></path>
+                  </svg>
+                  Loading...
+                </div>
+              ) : (
+                "Login"
+              )}
             </button>
 
             <div className="text-center text-gray-600">
