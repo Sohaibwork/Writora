@@ -20,11 +20,11 @@ export const authOptions: NextAuthOptions = {
           if (!user) {
             throw new Error("User not found with this email");
           }
-          if (!user.isVerified) {
-            throw new Error(
-              "Email not verified, please verify your email first."
-            );
-          }
+          // if (!user.isVerified) {
+          //   throw new Error(
+          //     "Email not verified, please verify your email first."
+          //   );
+          // }
           if (!user.password || typeof user.password !== "string") {
             throw new Error("Invalid email or password");
           }

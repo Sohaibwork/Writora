@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -27,6 +28,7 @@ export default function LoginPage() {
     if (res?.error) setError(res.error);
     if (res?.error) {
       toast.error(res.error);
+      setLoading(false);
     } else {
       setLoading(false);
       toast.success("Login successful!");
@@ -186,7 +188,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200"
                 />
-                {error && <p className="text-red-500 mt-1">{error}</p>}
+                {/* {error && <p className="text-red-500 mt-1">{error}</p>} */}
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
