@@ -10,12 +10,15 @@ function RegisterPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function handleRegister(e: any) {
     e.preventDefault();
+    setLoading(true);
+
     const res = await fetch("/api/register", {
       method: "POST",
       body: JSON.stringify(form),
@@ -24,6 +27,7 @@ function RegisterPage() {
 
     if (!res.ok) {
       const data = await res.json();
+      setLoading(true);
       if (data.error) {
         toast.error(data.error);
       } else {
@@ -31,7 +35,7 @@ function RegisterPage() {
       }
       setError(data.error);
     } else {
-      toast.success("Registration successful!-Please login to continue");
+      toast.success("Registration successful,Please login");
 
       router.push("/sign-in");
     }
@@ -202,6 +206,8 @@ function RegisterPage() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   value={form.password}
+                  minLength={8}
+                  maxLength={16}
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
                   }
@@ -223,11 +229,37 @@ function RegisterPage() {
               type="submit"
               className="w-full bg-purple-600 cursor-pointer hover:bg-purple-700 text-white py-3 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
             >
-              Sign Up
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <svg
+                    className="animate-spin h-5 w-5 mr-2 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8z"
+                    ></path>
+                  </svg>
+                  Loading...
+                </div>
+              ) : (
+                "Register"
+              )}
             </button>
 
             <div className="text-center text-gray-600">
-              have an account?
+              Already have an account?
               <button className="text-blue-500 hover:underline ml-1">
                 <Link href={"/sign-in"}>Login</Link>
               </button>

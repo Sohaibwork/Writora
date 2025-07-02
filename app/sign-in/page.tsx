@@ -180,8 +180,6 @@ export default function LoginPage() {
                   placeholder="Password"
                   required
                   value={password}
-                  minLength={8}
-                  maxLength={16}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200"
                 />

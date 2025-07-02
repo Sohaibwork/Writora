@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   const existing = await User.findOne({ email });
   if (existing) {
     return NextResponse.json(
-      { error: "Email already registered" },
+      { error: "Email already exsist" },
       { status: 400 }
     );
   }
