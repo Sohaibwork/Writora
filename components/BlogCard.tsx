@@ -31,7 +31,7 @@ export function BlogCard({
           <button>
             <Link
               href={`/blog/${title.toLowerCase().replace(/\s+/g, "-")}`}
-              className=" inline-block text-[#2aa8fb] font-semibold border ml-3 px-2 py-1 rounded hover:bg-[#2aa8fb] hover:text-white  transition"
+              className=" inline-block text-[#2aa8fb] text-[11px] font-semibold border ml-1 px-2 py-1 rounded hover:bg-[#2aa8fb] hover:text-white  transition"
             >
               Read More
             </Link>

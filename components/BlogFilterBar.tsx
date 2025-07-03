@@ -11,7 +11,7 @@ export function BlogFilterBar() {
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
   return (
-    <section className="bg-white px-4 md:px-8 py-6 shadow-sm    ">
+    <section className="bg-white px-4 md:px-8 py-6 shadow-sm text-black    ">
       <div className="max-w-6xl mx-auto flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="relative w-full md:w-1/2">
           <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -20,7 +20,7 @@ export function BlogFilterBar() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search blogs..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+            className="w-full pl-10 pr-4 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
           />
         </div>
 
@@ -28,7 +28,7 @@ export function BlogFilterBar() {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="w-full md:w-auto px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2aa7fa]"
+          className="w-full md:w-auto px-4 py-2 border text-[#7f7f7f] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2aa7fa]"
         >
           <option value="latest">Sort by Latest</option>
           <option value="popular">Sort by Popular</option>
