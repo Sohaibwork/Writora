@@ -19,8 +19,11 @@ export function Hero() {
             Written by creators. Supercharged by AI.
           </p>
 
-          <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
-            <Link href="/explore" className="btn">
+          <div className="flex flex-col sm:flex-row justify-center md:justify-start  gap-4">
+            <Link
+              href="/explore"
+              className="bg-[#2ba8fb] text-white px-6 py-3 rounded-full font-semibold text-lg font-medium hover:bg-[#2ba8fbe1] transition"
+            >
               Explore
             </Link>
             <Link
